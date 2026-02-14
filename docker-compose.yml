@@ -1,3 +1,17 @@
+######################################################
+networks:
+  vpnmedia-network:
+    name: vpnmedia-network
+    driver: bridge
+    external: true
+######################################################
+secrets:
+  openvpn_password:
+    file: ${CONFIGS}/gluetun/proton_pwd.txt
+  openvpn_user:
+    file: ${CONFIGS}/gluetun/proton_user.txt
+######################################################
+
 services:
   gluetun:
     image: qmcgaw/gluetun:latest
@@ -18,7 +32,7 @@ services:
     volumes:
       - ${CONFIGS}/gluetun:/gluetun
     environment:
-      VPNSP: private internet access
+      VPN_SERVICE_PROVIDER: protonvpn
       SERVER_REGIONS: US California
       PUID: ${PUID}
       PGID: ${PGID}
@@ -39,7 +53,7 @@ services:
         condition: service_healthy
         restart: true
     volumes:
-      - ${CONFIGS}/bittorrent:/config
+      - ${CONFIGS}/qbittorrent:/config
       - ${MEDIA}/downloads:/data/downloads
     environment:
       - PUID=${PUID}
@@ -49,16 +63,3 @@ services:
       - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod
     network_mode: service:gluetun
 
-######################################################
-networks:
-  vpnmedia-network:
-    name: vpnmedia-network
-    driver: bridge
-    external: true
-######################################################
-secrets:
-  openvpn_password:
-    file: ${CONFIGS}/gluetun/proton_pwd.txt
-  openvpn_user:
-    file: ${CONFIGS}/gluetun/proton_user.txt
-######################################################
