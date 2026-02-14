@@ -62,5 +62,8 @@ services:
       - TZ=${TIMEZONE}
       - WEBUI_PORT=${WEBUI_PORT_QBITTORRENT}
       - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod
+    deploy:
+      labels:
+        - "traefik.enable=true"
     network_mode: service:gluetun
 
