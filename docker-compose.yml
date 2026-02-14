@@ -39,7 +39,7 @@ services:
         condition: service_healthy
         restart: true
     volumes:
-      - ${CONFIGS}/qbittorrent:/config
+      - ${CONFIGS}/bittorrent:/config
       - ${MEDIA}/downloads:/data/downloads
     environment:
       - PUID=${PUID}
@@ -58,7 +58,7 @@ networks:
 ######################################################
 secrets:
   openvpn_password:
-    file: ${CONFIGS/}gluetun/proton_pwd.txt
+    file: ${CONFIGS}/gluetun/proton_pwd.txt
   openvpn_user:
     file: ${CONFIGS}/gluetun/proton_user.txt
 ######################################################
