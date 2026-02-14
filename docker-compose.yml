@@ -177,4 +177,4 @@ services:
     user: ${PUID}:${PGID}
     volumes:
       - ${DATA}/downloads/:/downloads
-      - ${CONFIGS}/unpackerr/unpackerr.conf:/config/unpackerr.conf:ro
+      - ${CONFIGS}/unpackerr:/config:ro
