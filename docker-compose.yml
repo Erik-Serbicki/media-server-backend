@@ -33,7 +33,8 @@ services:
       - ${CONFIGS}/gluetun:/gluetun
     environment:
       VPN_SERVICE_PROVIDER: protonvpn
-      SERVER_REGIONS: US California
+      VPN_TYPE: openvpn
+      SERVER_COUNTRIES: United States
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TIMEZONE}
