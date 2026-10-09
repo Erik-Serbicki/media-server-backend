@@ -4,7 +4,7 @@ networks:
     driver: bridge
     external: true
 secrets:
-  wireguard_secret_key:
+  wireguard_private_key:
     file: ${CONFIGS}/gluetun/wireguard_private_key.txt
 
 services:
@@ -38,10 +38,12 @@ services:
       VPN_PORT_FORWARDING: on
       PORT_FORWARD_ONLY: on
       VPN_PORT_FORWARDING_UP_COMMAND: /bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:${WEBUI_PORT_QBITTORRENT}/api/v2/app/setPreferences'
+      WIREGUARD_PRIVATE_KEY_SECRET_FILE: /run/secrets/wireguard_private_key
     networks:
       - vpnmedia-network
     secrets:
-      - wireguard_secret_key
+      - wireguard_private_key
+      
 # Torrent manager
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
