@@ -4,13 +4,10 @@ networks:
     driver: bridge
     external: true
 secrets:
-  openvpn_password:
-    file: ${CONFIGS}/gluetun/proton_pwd.txt
-  openvpn_user:
-    file: ${CONFIGS}/gluetun/proton_user.txt
+  wireguard_secret_key:
+    file: ${CONFIGS}/gluetun/wireguard_private_key.txt
 
 services:
-
   # VPN and Network manager
   gluetun:
     image: qmcgaw/gluetun:latest
@@ -32,18 +29,19 @@ services:
       - ${CONFIGS}/gluetun:/gluetun
     environment:
       VPN_SERVICE_PROVIDER: protonvpn
-      VPN_TYPE: openvpn
+      VPN_TYPE: wireguard
       SERVER_COUNTRIES: United States
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TIMEZONE}
       SHADOWSOCKS: on
+      VPN_PORT_FORWARDING: on
+      PORT_FORWARD_ONLY: on
+      VPN_PORT_FORWARDING_UP_COMMAND: /bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:${WEBUI_PORT_QBITTORRENT}/api/v2/app/setPreferences'
     networks:
       - vpnmedia-network
     secrets:
-      - openvpn_password
-      - openvpn_user 
-
+      - wireguard_secret_key
 # Torrent manager
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
